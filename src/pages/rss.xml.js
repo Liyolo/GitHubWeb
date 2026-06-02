@@ -10,11 +10,12 @@ export async function GET(context) {
   const posts = (await getCollection("posts")).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
   );
+  const rssSite = new URL(baseUrl, context.site).toString();
 
   return rss({
     title: "Notes & Fieldwork",
     description: "一个记录思考、项目和生活观察的个人博客。",
-    site: context.site,
+    site: rssSite,
     items: posts.map((post) => ({
       title: post.data.title,
       description: post.data.description,
