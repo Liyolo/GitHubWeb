@@ -1,0 +1,57 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "个人博客 | Notes & Fieldwork",
+  description = "一个记录思考、项目和生活观察的个人博客。",
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Nunito+Sans:wght@400;600;800&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header">
+      <nav class="nav" aria-label="主导航">
+        <a class="brand" href={Astro.site ? new URL(Astro.base, Astro.site).pathname : Astro.base} aria-label="回到首页">
+          <span class="brand-mark">N</span>
+          <span>Notes & Fieldwork</span>
+        </a>
+        <div class="nav-links">
+          <a href={`${Astro.base}#posts`}>文章</a>
+          <a href={`${Astro.base}archive/`}>归档</a>
+          <a href={`${Astro.base}#about`}>关于</a>
+          <a href={`${Astro.base}#contact`}>联系</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Notes & Fieldwork. Built with Astro and GitHub Pages.</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  category: string;
+  tags: string[];
+}
+
+const { title, description, pubDate, category, tags } = Astro.props;
+const formattedDate = new Intl.DateTimeFormat("zh-CN", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+}).format(pubDate);
+---
+
+<BaseLayout title={`${title} | Notes & Fieldwork`} description={description}>
+  <article class="post-page">
+    <a class="back-link" href={`${Astro.base}`}>← 返回首页</a>
+    <p class="post-meta">{formattedDate} · {category}</p>
+    <h1>{title}</h1>
+    <p class="post-description">{description}</p>
+    <div class="tag-list" aria-label="文章标签">
+      {tags.map((tag) => <span>{tag}</span>)}
+    </div>
+    <div class="article-content">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>
