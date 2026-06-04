@@ -61,3 +61,51 @@ npm run build
 ```
 
 构建产物位于 `dist/`，并由 GitHub Pages 发布。
+
+## 分类、标签和目录
+
+文章的 `category` 会自动生成分类页，例如：
+
+```text
+/categories/学习/
+```
+
+文章的 `tags` 会自动生成标签页，例如：
+
+```text
+/tags/Astro/
+```
+
+文章正文中的二级和三级标题会自动生成目录。建议长文章使用：
+
+```markdown
+## 一级段落标题
+
+### 更细的小节
+```
+
+## SEO 和分享
+
+每篇文章会自动生成基础 SEO、Open Graph、Twitter Card 和 `BlogPosting` JSON-LD metadata。
+
+如果想给文章设置分享图，可以在 frontmatter 中添加：
+
+```yaml
+image: "/GitHubWeb/images/posts/example.jpg"
+```
+
+图片文件可以放在：
+
+```text
+public/images/posts/
+```
+
+## 草稿
+
+如果文章暂时不想发布，可以设置：
+
+```yaml
+draft: true
+```
+
+设置为草稿后，文章不会出现在首页、归档、分类、标签和 RSS 中。
