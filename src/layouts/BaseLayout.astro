@@ -21,8 +21,28 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
 const withBase = (path = "") => `${baseUrl}${path.replace(/^\/+/, "")}`;
+const resolveImageUrl = (imagePath?: string) => {
+  if (!imagePath) return undefined;
+  if (/^https?:\/\//i.test(imagePath)) return imagePath;
+
+  const basePath = baseUrl.replace(/^\/+|\/+$/g, "");
+  let imagePathWithBase = imagePath.replace(/^\/+/, "");
+
+  if (basePath) {
+    const duplicateBase = `${basePath}/${basePath}/`;
+    while (imagePathWithBase.startsWith(duplicateBase)) {
+      imagePathWithBase = imagePathWithBase.slice(basePath.length + 1);
+    }
+
+    if (imagePathWithBase !== basePath && !imagePathWithBase.startsWith(`${basePath}/`)) {
+      imagePathWithBase = `${basePath}/${imagePathWithBase}`;
+    }
+  }
+
+  return new URL(imagePathWithBase, Astro.site).toString();
+};
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const imageUrl = image ? new URL(image, Astro.site).toString() : undefined;
+const imageUrl = resolveImageUrl(image);
 ---
 
 <!doctype html>
