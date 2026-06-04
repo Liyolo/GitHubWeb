@@ -5,9 +5,16 @@ import { getPublishedPosts } from "../lib/posts";
 import { formatDate, withBase } from "../lib/site";
 
 const posts = getPublishedPosts(await getCollection("posts"));
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "文章归档",
+  description: "Notes & Fieldwork 的全部文章归档。",
+  url: new URL(withBase("archive/"), Astro.site).toString(),
+};
 ---
 
-<BaseLayout title="文章归档 | Notes & Fieldwork" description="Notes & Fieldwork 的全部文章归档。">
+<BaseLayout title="文章归档 | Notes & Fieldwork" description="Notes & Fieldwork 的全部文章归档。" structuredData={structuredData}>
   <section class="post-page">
     <a class="back-link" href={withBase()}>← 返回首页</a>
     <p class="eyebrow">Archive</p>

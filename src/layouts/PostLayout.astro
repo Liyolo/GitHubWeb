@@ -5,13 +5,15 @@ import TableOfContents from "../components/TableOfContents.astro";
 interface Props {
   title: string;
   description: string;
+  slug: string;
   pubDate: Date;
   category: string;
   tags: string[];
   headings: { depth: number; slug: string; text: string }[];
+  image?: string;
 }
 
-const { title, description, pubDate, category, tags, headings } = Astro.props;
+const { title, description, slug, pubDate, category, tags, headings, image } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
@@ -21,9 +23,32 @@ const formattedDate = new Intl.DateTimeFormat("zh-CN", {
   month: "2-digit",
   day: "2-digit",
 }).format(pubDate);
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description,
+  datePublished: pubDate.toISOString(),
+  dateModified: pubDate.toISOString(),
+  author: {
+    "@type": "Person",
+    name: "Notes & Fieldwork",
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": new URL(withBase(`posts/${slug}/`), Astro.site).toString(),
+  },
+  keywords: tags.join(", "),
+};
 ---
 
-<BaseLayout title={`${title} | Notes & Fieldwork`} description={description}>
+<BaseLayout
+  title={`${title} | Notes & Fieldwork`}
+  description={description}
+  image={image}
+  type="article"
+  structuredData={structuredData}
+>
   <article class="post-page">
     <a class="back-link" href={withBase()}>← 返回首页</a>
     <p class="post-meta">{formattedDate} · {category}</p>

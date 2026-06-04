@@ -7,9 +7,16 @@ import { formatDate, withBase } from "../lib/site";
 const posts = getPublishedPosts(await getCollection("posts"));
 const featured = posts.find((post) => post.data.featured) ?? posts[0];
 const tags = getTags(posts).slice(0, 12);
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  name: "Notes & Fieldwork",
+  description: "一个记录思考、项目和生活观察的个人博客。",
+  url: new URL(withBase(), Astro.site).toString(),
+};
 ---
 
-<BaseLayout>
+<BaseLayout structuredData={structuredData}>
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero-media" role="img" aria-label="铺开的笔记、咖啡和晨光中的书桌"></div>
     <div class="hero-content">
