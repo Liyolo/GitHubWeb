@@ -9,6 +9,8 @@ const posts = defineCollection({
     category: z.enum(["项目", "学习", "生活"]),
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
+    image: z.string().optional(),
+    draft: z.boolean().default(false),
   }),
 });
 
