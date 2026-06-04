@@ -15,7 +15,7 @@ const headings = Astro.props.headings.filter((heading: Heading) => heading.depth
 {headings.length > 0 && (
   <aside class="table-of-contents" aria-label="文章目录">
     <p class="eyebrow">Contents</p>
-    <nav>
+    <nav aria-label="文章目录">
       {headings.map((heading) => (
         <a class={`toc-depth-${heading.depth}`} href={`#${heading.slug}`}>{heading.text}</a>
       ))}
