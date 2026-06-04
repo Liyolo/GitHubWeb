@@ -496,3 +496,42 @@ h3 {
     gap: 0.3rem;
   }
 }
+
+.post-meta a {
+  color: var(--pine);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.mini-tag-list,
+.topic-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.mini-tag-list {
+  margin: 0.8rem 0 1.1rem;
+}
+
+.mini-tag-list a,
+.topic-cloud a {
+  padding: 0.3rem 0.65rem;
+  border: 1px solid rgba(24, 33, 31, 0.14);
+  border-radius: 999px;
+  color: var(--pine);
+  background: rgba(255, 250, 240, 0.72);
+  font-size: 0.88rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.topic-cloud {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+}
+
+.taxonomy-page h1 {
+  max-width: 760px;
+}

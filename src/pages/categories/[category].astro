@@ -1,0 +1,37 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPublishedPosts, getCategories, categorySlug } from "../../lib/posts";
+import { formatDate, withBase } from "../../lib/site";
+
+export async function getStaticPaths() {
+  const posts = getPublishedPosts(await getCollection("posts"));
+
+  return getCategories(posts).map((entry) => ({
+    params: { category: categorySlug(entry.name) },
+    props: { category: entry.name, posts: entry.posts },
+  }));
+}
+
+const { category, posts } = Astro.props;
+---
+
+<BaseLayout title={`${category} 分类 | Notes & Fieldwork`} description={`Notes & Fieldwork 中 ${category} 分类下的全部文章。`}>
+  <section class="post-page taxonomy-page">
+    <a class="back-link" href={withBase()}>← 返回首页</a>
+    <p class="eyebrow">Category</p>
+    <h1>{category}</h1>
+    <p class="post-description">这个分类下共有 {posts.length} 篇文章。</p>
+    <div class="archive-list">
+      {posts.map((post) => (
+        <article class="archive-item">
+          <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+          <div>
+            <a href={withBase(`posts/${post.slug}/`)}>{post.data.title}</a>
+            <p>{post.data.description}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

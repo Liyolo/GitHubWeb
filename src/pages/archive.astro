@@ -1,20 +1,10 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getPublishedPosts } from "../lib/posts";
+import { formatDate, withBase } from "../lib/site";
 
-const posts = (await getCollection("posts")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
-const baseUrl = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
-const withBase = (path = "") => `${baseUrl}${path.replace(/^\/+/, "")}`;
-const formatDate = (date) =>
-  new Intl.DateTimeFormat("zh-CN", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(date);
+const posts = getPublishedPosts(await getCollection("posts"));
 ---
 
 <BaseLayout title="文章归档 | Notes & Fieldwork" description="Notes & Fieldwork 的全部文章归档。">

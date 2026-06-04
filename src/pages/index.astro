@@ -1,21 +1,12 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { categorySlug, getPublishedPosts, getTags, tagSlug } from "../lib/posts";
+import { formatDate, withBase } from "../lib/site";
 
-const posts = (await getCollection("posts")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const posts = getPublishedPosts(await getCollection("posts"));
 const featured = posts.find((post) => post.data.featured) ?? posts[0];
-const baseUrl = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
-const withBase = (path = "") => `${baseUrl}${path.replace(/^\/+/, "")}`;
-const formatDate = (date) =>
-  new Intl.DateTimeFormat("zh-CN", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(date);
+const tags = getTags(posts).slice(0, 12);
 ---
 
 <BaseLayout>
@@ -67,9 +58,17 @@ const formatDate = (date) =>
       {posts.length > 0 ? (
         posts.map((post) => (
           <article class="post-card" data-topic={post.data.category}>
-            <p class="post-meta">{formatDate(post.data.pubDate)} · {post.data.category}</p>
+            <p class="post-meta">
+              {formatDate(post.data.pubDate)} ·
+              <a href={withBase(`categories/${categorySlug(post.data.category)}/`)}>{post.data.category}</a>
+            </p>
             <h3><a href={withBase(`posts/${post.slug}/`)}>{post.data.title}</a></h3>
             <p>{post.data.description}</p>
+            <div class="mini-tag-list">
+              {post.data.tags.map((tag) => (
+                <a href={withBase(`tags/${tagSlug(tag)}/`)}>{tag}</a>
+              ))}
+            </div>
             <a class="read-more" href={withBase(`posts/${post.slug}/`)}>阅读全文</a>
           </article>
         ))
@@ -77,6 +76,15 @@ const formatDate = (date) =>
         <p class="empty-state">暂无文章，稍后再来看看。</p>
       )}
     </div>
+
+    {tags.length > 0 && (
+      <div class="topic-cloud" aria-label="热门标签">
+        <p class="eyebrow">Tags</p>
+        {tags.map((entry) => (
+          <a href={withBase(`tags/${entry.slug}/`)}>{entry.name}</a>
+        ))}
+      </div>
+    )}
   </section>
 
   <section id="about" class="about-section" aria-labelledby="about-title">
