@@ -279,6 +279,50 @@ h3 {
   background: var(--pine);
 }
 
+.post-search {
+  display: grid;
+  gap: 0.45rem;
+  max-width: 620px;
+  margin-bottom: 1.2rem;
+}
+
+.post-search label {
+  color: var(--pine);
+  font-weight: 900;
+}
+
+.post-search input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(24, 33, 31, 0.18);
+  border-radius: 999px;
+  color: var(--ink);
+  background: rgba(255, 250, 240, 0.82);
+  font: inherit;
+}
+
+.post-search input:focus {
+  outline: 3px solid rgba(139, 184, 200, 0.45);
+  outline-offset: 2px;
+}
+
+.search-help,
+.search-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.search-status {
+  margin-bottom: 1rem;
+  font-weight: 800;
+}
+
+.search-empty {
+  margin-top: 1.5rem;
+}
+
 .post-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

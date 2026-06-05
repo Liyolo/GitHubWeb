@@ -1,12 +1,24 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { categorySlug, getPublishedPosts, getTags, tagSlug } from "../lib/posts";
+import { categorySlug, getPublishedPosts, getTags, tagSlug, type BlogPost } from "../lib/posts";
 import { formatDate, withBase } from "../lib/site";
 
 const posts = getPublishedPosts(await getCollection("posts"));
 const featured = posts.find((post) => post.data.featured) ?? posts[0];
 const tags = getTags(posts).slice(0, 12);
+const normalizeSearchText = (value: string) => value.toLowerCase();
+const searchIndex = posts.map((post: BlogPost) => ({
+  slug: post.slug,
+  title: post.data.title,
+  description: post.data.description,
+  category: post.data.category,
+  tags: post.data.tags,
+  url: withBase(`posts/${post.slug}/`),
+  text: normalizeSearchText(
+    [post.data.title, post.data.description, post.data.category, ...post.data.tags].join(" ")
+  ),
+}));
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "Blog",
@@ -54,6 +66,18 @@ const structuredData = {
       <h2 id="posts-title">文章</h2>
     </div>
 
+    <div class="post-search" role="search">
+      <label for="postSearch">搜索文章</label>
+      <input
+        id="postSearch"
+        name="postSearch"
+        type="search"
+        placeholder="输入标题、摘要、分类或标签"
+        autocomplete="off"
+      />
+      <p class="search-help">可以搜索标题、摘要、分类和标签。</p>
+    </div>
+
     <div class="filter-bar" role="list" aria-label="文章筛选">
       <button class="filter active" data-filter="all" type="button" aria-pressed="true">全部</button>
       <button class="filter" data-filter="项目" type="button" aria-pressed="false">项目</button>
@@ -61,10 +85,14 @@ const structuredData = {
       <button class="filter" data-filter="生活" type="button" aria-pressed="false">生活</button>
     </div>
 
+    <p class="search-status" aria-live="polite">
+      显示 <span data-search-count>{posts.length}</span> 篇文章
+    </p>
+
     <div class="post-grid" id="postGrid">
       {posts.length > 0 ? (
         posts.map((post) => (
-          <article class="post-card" data-topic={post.data.category}>
+          <article class="post-card" data-topic={post.data.category} data-slug={post.slug}>
             <p class="post-meta">
               {formatDate(post.data.pubDate)} ·
               <a href={withBase(`categories/${categorySlug(post.data.category)}/`)}>{post.data.category}</a>
@@ -83,6 +111,8 @@ const structuredData = {
         <p class="empty-state">暂无文章，稍后再来看看。</p>
       )}
     </div>
+
+    <p class="empty-state search-empty" hidden>没有找到匹配的文章，换个关键词试试。</p>
 
     {tags.length > 0 && (
       <div class="topic-cloud" aria-label="热门标签">
@@ -119,37 +149,6 @@ const structuredData = {
     </div>
   </section>
 
-  <script is:inline>
-    const initPostFilters = () => {
-      const filterBar = document.querySelector(".filter-bar");
-      const filters = document.querySelectorAll(".filter");
-      const posts = document.querySelectorAll(".post-card");
-
-      if (!filterBar || filters.length === 0 || posts.length === 0) return;
-
-      filterBar.addEventListener("click", (event) => {
-        const filter = event.target.closest(".filter");
-        if (!filter) return;
-
-        const topic = filter.dataset.filter;
-
-        filters.forEach((item) => {
-          const isActive = item === filter;
-          item.classList.toggle("active", isActive);
-          item.setAttribute("aria-pressed", String(isActive));
-        });
-
-        posts.forEach((post) => {
-          const shouldShow = topic === "all" || post.dataset.topic === topic;
-          post.hidden = !shouldShow;
-        });
-      });
-    };
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", initPostFilters, { once: true });
-    } else {
-      initPostFilters();
-    }
-  </script>
+  <script type="application/json" id="post-search-data" set:html={JSON.stringify(searchIndex)} />
+  <script src={withBase("scripts/post-search.js")} defer></script>
 </BaseLayout>
