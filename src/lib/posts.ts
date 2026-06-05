@@ -9,6 +9,19 @@ export const sortPostsNewestFirst = (posts: BlogPost[]) =>
 export const getPublishedPosts = (posts: BlogPost[]) =>
   sortPostsNewestFirst(posts.filter((post) => !post.data.draft));
 
+export const getAdjacentPosts = (posts: BlogPost[], slug: string) => {
+  const publishedPosts = getPublishedPosts(posts);
+  const currentIndex = publishedPosts.findIndex((post) => post.slug === slug);
+
+  return {
+    previousPost: currentIndex > 0 ? publishedPosts[currentIndex - 1] : undefined,
+    nextPost:
+      currentIndex >= 0 && currentIndex < publishedPosts.length - 1
+        ? publishedPosts[currentIndex + 1]
+        : undefined,
+  };
+};
+
 export const getCategories = (posts: BlogPost[]) =>
   CATEGORY_NAMES.map((category) => ({
     name: category,
