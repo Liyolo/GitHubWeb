@@ -19,6 +19,7 @@ const searchIndex = posts.map((post: BlogPost) => ({
     [post.data.title, post.data.description, post.data.category, ...post.data.tags].join(" ")
   ),
 }));
+const searchIndexJson = JSON.stringify(searchIndex).replace(/</g, "\\u003c");
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "Blog",
@@ -149,6 +150,6 @@ const structuredData = {
     </div>
   </section>
 
-  <script type="application/json" id="post-search-data" set:html={JSON.stringify(searchIndex)} />
+  <script type="application/json" id="post-search-data" set:html={searchIndexJson} />
   <script src={withBase("scripts/post-search.js")} defer></script>
 </BaseLayout>
