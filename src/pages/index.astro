@@ -120,11 +120,17 @@ const structuredData = {
   </section>
 
   <script is:inline>
-    const filters = document.querySelectorAll(".filter");
-    const posts = document.querySelectorAll(".post-card");
+    const initPostFilters = () => {
+      const filterBar = document.querySelector(".filter-bar");
+      const filters = document.querySelectorAll(".filter");
+      const posts = document.querySelectorAll(".post-card");
 
-    filters.forEach((filter) => {
-      filter.addEventListener("click", () => {
+      if (!filterBar || filters.length === 0 || posts.length === 0) return;
+
+      filterBar.addEventListener("click", (event) => {
+        const filter = event.target.closest(".filter");
+        if (!filter) return;
+
         const topic = filter.dataset.filter;
 
         filters.forEach((item) => {
@@ -138,6 +144,12 @@ const structuredData = {
           post.hidden = !shouldShow;
         });
       });
-    });
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initPostFilters, { once: true });
+    } else {
+      initPostFilters();
+    }
   </script>
 </BaseLayout>

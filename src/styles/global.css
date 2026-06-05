@@ -300,6 +300,10 @@ h3 {
   transform: translateY(-4px);
 }
 
+.post-card[hidden] {
+  display: none;
+}
+
 .post-card p:not(.post-meta) {
   color: var(--muted);
 }
