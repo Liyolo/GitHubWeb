@@ -67,13 +67,13 @@ npm run build
 文章的 `category` 会自动生成分类页，例如：
 
 ```text
-/categories/学习/
+/GitHubWeb/categories/learning/
 ```
 
 文章的 `tags` 会自动生成标签页，例如：
 
 ```text
-/tags/Astro/
+/GitHubWeb/tags/astro/
 ```
 
 文章正文中的二级和三级标题会自动生成目录。建议长文章使用：

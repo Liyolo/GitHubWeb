@@ -1,5 +1,6 @@
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
+import { getPublishedPosts } from "../lib/posts";
 
 const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
@@ -7,9 +8,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 const withBase = (path = "") => `${baseUrl}${path.replace(/^\/+/, "")}`;
 
 export async function GET(context) {
-  const posts = (await getCollection("posts")).sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-  );
+  const posts = getPublishedPosts(await getCollection("posts"));
   const rssSite = new URL(baseUrl, context.site).toString();
 
   return rss({
