@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { contactLinks } from "../data/contact-links";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { categorySlug, getPublishedPosts, getTags, tagSlug, type BlogPost } from "../lib/posts";
 import { formatDate, withBase } from "../lib/site";
@@ -143,9 +144,11 @@ const structuredData = {
     <p class="eyebrow">Contact</p>
     <h2 id="contact-title">想交流的话，可以从这里开始。</h2>
     <div class="contact-links">
-      <a href="mailto:hello@example.com">Email</a>
-      <a href="https://github.com/" rel="noreferrer">GitHub</a>
-      <a href="https://www.linkedin.com/" rel="noreferrer">LinkedIn</a>
+      {contactLinks.map((link) => (
+        <a href={link.href} rel={link.href.startsWith("http") ? "noreferrer" : undefined}>
+          {link.label}
+        </a>
+      ))}
     </div>
   </section>
 

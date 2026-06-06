@@ -83,6 +83,26 @@ featured: false
 
 页脚会显示本站访问量。每篇文章标题下方会显示眼睛图标和当前文章阅读量。访问统计脚本只会在非本地环境加载，本地 `localhost`、`127.0.0.1` 和 `::1` 访问不会污染统计数据。
 
+## 配置联系方式
+
+首页 Contact 区的联系方式集中配置在：
+
+```text
+src/data/contact-links.ts
+```
+
+修改 `contactLinks` 数组即可增删链接，例如：
+
+```ts
+export const contactLinks = [
+  { label: "Email", href: "mailto:hello@example.com" },
+  { label: "GitHub", href: "https://github.com/你的用户名" },
+  { label: "公众号", href: "https://example.com" },
+];
+```
+
+`mailto:` 邮箱链接会直接打开邮件客户端，`https://` 外链会自动添加安全的 `rel="noreferrer"`。
+
 ## 部署
 
 推送到 `main` 分支后，GitHub Actions 会自动运行：
