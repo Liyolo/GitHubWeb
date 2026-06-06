@@ -1,7 +1,8 @@
 const initVisitCounter = () => {
   const counterSelector = "#busuanzi_value_site_pv, #busuanzi_value_page_pv";
   const hasCounter = document.querySelector(counterSelector);
-  const isLocalHost = ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname);
+  const localHosts = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
+  const isLocalHost = localHosts.has(window.location.hostname);
 
   if (!hasCounter || isLocalHost || document.querySelector("[data-visit-counter-script]")) {
     return;

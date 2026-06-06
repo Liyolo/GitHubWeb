@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "astro dev --host 127.0.0.1",
     "build": "astro build",
-    "preview": "astro preview --host 127.0.0.1"
+    "preview": "astro preview --host 127.0.0.1",
+    "verify:public-scripts": "node scripts/verify-public-scripts.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.11",
