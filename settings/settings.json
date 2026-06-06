@@ -1,4 +1,23 @@
 {
+  "site": {
+    "name": "Notes & Fieldwork",
+    "title": "个人博客 | Notes & Fieldwork",
+    "description": "一个记录思考、项目和生活观察的个人博客。",
+    "author": "Notes & Fieldwork",
+    "brandInitial": "N",
+    "footerText": "© 2026 Notes & Fieldwork. Built with Astro and GitHub Pages."
+  },
+  "home": {
+    "eyebrow": "Personal blog / 个人记录",
+    "heroTitle": "把想法写清楚，把日子过具体。",
+    "heroCopy": "这里会放我的项目复盘、学习笔记、阅读摘录和一些生活现场。先从小而稳定的更新开始，让每篇文章都留下可复用的线索。",
+    "aboutEyebrow": "About",
+    "aboutTitle": "你好，我在这里记录正在形成的想法。",
+    "aboutCopy": "你可以把这一段改成自己的介绍：你是谁、正在做什么、关心哪些问题，以及希望通过这个博客和谁产生连接。",
+    "topics": ["项目复盘", "技术学习", "阅读笔记", "生活观察"],
+    "contactEyebrow": "Contact",
+    "contactTitle": "想交流的话，可以从这里开始。"
+  },
   "contactLinks": [
     {
       "label": "Email",
