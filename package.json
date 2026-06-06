@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev --host 127.0.0.1",
+    "prebuild": "npm run verify:public-scripts",
     "build": "astro build",
     "preview": "astro preview --host 127.0.0.1",
     "verify:public-scripts": "node scripts/verify-public-scripts.mjs"
