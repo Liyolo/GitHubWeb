@@ -1,7 +1,6 @@
 .superpowers/
 .worktrees/
 logs/
-settings/settings.local.json
 .DS_Store
 Thumbs.db
 node_modules/

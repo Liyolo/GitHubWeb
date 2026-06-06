@@ -10,8 +10,7 @@ export type SiteSettings = {
   contactLinks: ContactLink[];
 };
 
-const localSettingsPath = path.join(process.cwd(), "settings", "settings.local.json");
-const exampleSettingsPath = path.join(process.cwd(), "settings", "settings.example.json");
+const settingsPath = path.join(process.cwd(), "settings", "settings.json");
 
 const readSettingsFile = async (filePath: string) => {
   const content = await readFile(filePath, "utf8");
@@ -33,13 +32,5 @@ const validateSettings = (settings: SiteSettings) => {
 };
 
 export const getSiteSettings = async () => {
-  try {
-    return validateSettings(await readSettingsFile(localSettingsPath));
-  } catch (error) {
-    if ((error as { code?: string }).code === "ENOENT") {
-      return validateSettings(await readSettingsFile(exampleSettingsPath));
-    }
-
-    throw error;
-  }
+  return validateSettings(await readSettingsFile(settingsPath));
 };

@@ -85,19 +85,13 @@ featured: false
 
 ## 配置联系方式
 
-首页 Contact 区的联系方式由 Settings 文件配置。仓库里只提交示例文件：
+首页 Contact 区的联系方式由 Settings 文件配置：
 
 ```text
-settings/settings.example.json
+settings/settings.json
 ```
 
-如果要配置自己的邮箱、GitHub、公众号等链接，复制一份本地配置：
-
-```powershell
-Copy-Item settings/settings.example.json settings/settings.local.json
-```
-
-然后修改 `settings/settings.local.json`：
+修改 `contactLinks` 数组即可增删链接：
 
 ```json
 {
@@ -109,7 +103,7 @@ Copy-Item settings/settings.example.json settings/settings.local.json
 }
 ```
 
-`settings/settings.local.json` 已加入 `.gitignore`，不会提交到 Git；如果本地配置不存在，构建会自动使用 `settings/settings.example.json`。`mailto:` 邮箱链接会直接打开邮件客户端，`https://` 外链会自动添加安全的 `rel="noreferrer"`。
+`mailto:` 邮箱链接会直接打开邮件客户端，`https://` 外链会自动添加安全的 `rel="noreferrer"`。
 
 ## 部署
 
