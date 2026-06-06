@@ -413,6 +413,42 @@ h3 {
   text-align: center;
 }
 
+.visit-counter,
+.article-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.visit-counter {
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.visit-counter strong {
+  color: var(--pine);
+}
+
+.site-visit-counter {
+  justify-content: center;
+  margin-top: 0.4rem;
+}
+
+.article-meta {
+  flex-wrap: wrap;
+}
+
+.article-visit-counter {
+  color: var(--pine);
+}
+
+.visit-counter-icon {
+  width: 1.05em;
+  height: 1.05em;
+  flex: 0 0 auto;
+}
+
 .post-page {
   width: min(820px, calc(100% - 32px));
   margin: 0 auto;

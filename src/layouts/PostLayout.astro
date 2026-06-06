@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
 import TableOfContents from "../components/TableOfContents.astro";
+import VisitCounter from "../components/VisitCounter.astro";
 import type { BlogPost } from "../lib/posts";
 
 interface Props {
@@ -76,7 +77,10 @@ const structuredData = {
 >
   <article class="post-page">
     <a class="back-link" href={withBase()}>← 返回首页</a>
-    <p class="post-meta">{formattedDate} · {category}</p>
+    <p class="post-meta article-meta">
+      <span>{formattedDate} · {category}</span>
+      <VisitCounter type="page" />
+    </p>
     <h1>{title}</h1>
     <p class="post-description">{description}</p>
     <div class="tag-list" aria-label="文章标签">

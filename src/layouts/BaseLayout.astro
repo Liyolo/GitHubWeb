@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import VisitCounter from "../components/VisitCounter.astro";
 
 interface Props {
   title?: string;
@@ -92,6 +93,8 @@ const imageUrl = resolveImageUrl(image);
 
     <footer class="site-footer">
       <p>© 2026 Notes & Fieldwork. Built with Astro and GitHub Pages.</p>
+      <VisitCounter type="site" />
     </footer>
+    <script src={withBase("scripts/visit-counter.js")} defer></script>
   </body>
 </html>
