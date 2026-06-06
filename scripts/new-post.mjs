@@ -1,11 +1,15 @@
 import { existsSync } from "node:fs";
 import { writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import path from "node:path";
 
 const VALID_CATEGORIES = new Set(["项目", "学习", "生活"]);
 const DEFAULT_CATEGORY = "学习";
 const DEFAULT_TAGS = ["写作"];
-const USAGE = '用法: npm run new-post -- "文章标题" [项目|学习|生活] [标签1] [标签2]';
+const USAGE = [
+  '用法: npm run new-post -- "文章标题" [分类: 项目|学习|生活] [标签1] [标签2]',
+  "提示: 传标签时请先填写分类；只传标题时默认分类“学习”、标签“写作”。",
+].join("\n");
 
 const [rawTitle, rawCategory = DEFAULT_CATEGORY, ...rawTags] = process.argv.slice(2);
 const title = rawTitle?.trim();
@@ -20,6 +24,7 @@ if (!title) {
 
 if (!VALID_CATEGORIES.has(category)) {
   console.error("分类必须是：项目、学习、生活。");
+  console.error("如果要传标签，请先填写分类，再填写标签。");
   console.error(USAGE);
   process.exit(1);
 }
@@ -39,7 +44,9 @@ const createSlug = (value, date) => {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
-  return slug || `post-${formatDate(date)}`;
+  const fallbackHash = createHash("sha256").update(value, "utf8").digest("hex").slice(0, 10);
+
+  return slug || `post-${formatDate(date)}-${fallbackHash}`;
 };
 
 const quote = (value) => JSON.stringify(value);
