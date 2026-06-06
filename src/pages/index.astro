@@ -1,13 +1,14 @@
 ---
 import { getCollection } from "astro:content";
-import { contactLinks } from "../data/contact-links";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { categorySlug, getPublishedPosts, getTags, tagSlug, type BlogPost } from "../lib/posts";
+import { getSiteSettings } from "../lib/settings";
 import { formatDate, withBase } from "../lib/site";
 
 const posts = getPublishedPosts(await getCollection("posts"));
 const featured = posts.find((post) => post.data.featured) ?? posts[0];
 const tags = getTags(posts).slice(0, 12);
+const { contactLinks } = await getSiteSettings();
 const normalizeSearchText = (value: string) => value.toLowerCase();
 const searchIndex = posts.map((post: BlogPost) => ({
   slug: post.slug,

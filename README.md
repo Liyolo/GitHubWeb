@@ -85,23 +85,31 @@ featured: false
 
 ## 配置联系方式
 
-首页 Contact 区的联系方式集中配置在：
+首页 Contact 区的联系方式由 Settings 文件配置。仓库里只提交示例文件：
 
 ```text
-src/data/contact-links.ts
+settings/settings.example.json
 ```
 
-修改 `contactLinks` 数组即可增删链接，例如：
+如果要配置自己的邮箱、GitHub、公众号等链接，复制一份本地配置：
 
-```ts
-export const contactLinks = [
-  { label: "Email", href: "mailto:hello@example.com" },
-  { label: "GitHub", href: "https://github.com/你的用户名" },
-  { label: "公众号", href: "https://example.com" },
-];
+```powershell
+Copy-Item settings/settings.example.json settings/settings.local.json
 ```
 
-`mailto:` 邮箱链接会直接打开邮件客户端，`https://` 外链会自动添加安全的 `rel="noreferrer"`。
+然后修改 `settings/settings.local.json`：
+
+```json
+{
+  "contactLinks": [
+    { "label": "Email", "href": "mailto:hello@example.com" },
+    { "label": "GitHub", "href": "https://github.com/你的用户名" },
+    { "label": "公众号", "href": "https://example.com" }
+  ]
+}
+```
+
+`settings/settings.local.json` 已加入 `.gitignore`，不会提交到 Git；如果本地配置不存在，构建会自动使用 `settings/settings.example.json`。`mailto:` 邮箱链接会直接打开邮件客户端，`https://` 外链会自动添加安全的 `rel="noreferrer"`。
 
 ## 部署
 
