@@ -35,6 +35,8 @@ export type SiteSettings = {
 
 const settingsPath = path.join(process.cwd(), "settings", "settings.json");
 const hrefPrefixes = ["http://", "https://", "mailto:", "/", "#"];
+const mailtoPrefix = "mailto:";
+const emailAddressPattern = /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/;
 
 const readSettingsFile = async (filePath: string) => {
   const content = await readFile(filePath, "utf8");
@@ -52,6 +54,14 @@ const assertHref = (value: string, fieldName: string) => {
     throw new Error(
       `settings.${fieldName} must start with one of: ${hrefPrefixes.join(", ")}.`,
     );
+  }
+
+  if (value.startsWith(mailtoPrefix)) {
+    const emailAddress = value.slice(mailtoPrefix.length);
+
+    if (!emailAddressPattern.test(emailAddress)) {
+      throw new Error(`settings.${fieldName} must contain a single valid email address.`);
+    }
   }
 };
 
