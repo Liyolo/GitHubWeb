@@ -34,10 +34,11 @@ export type SiteSettings = {
 };
 
 const settingsPath = path.join(process.cwd(), "settings", "settings.json");
+const hrefPrefixes = ["http://", "https://", "mailto:", "/", "#"];
 
 const readSettingsFile = async (filePath: string) => {
   const content = await readFile(filePath, "utf8");
-  return JSON.parse(content) as SiteSettings;
+  return JSON.parse(content) as unknown;
 };
 
 const assertString = (value: unknown, fieldName: string) => {
@@ -46,43 +47,70 @@ const assertString = (value: unknown, fieldName: string) => {
   }
 };
 
-const validateSettings = (settings: SiteSettings) => {
-  assertString(settings.site?.name, "site.name");
-  assertString(settings.site?.title, "site.title");
-  assertString(settings.site?.description, "site.description");
-  assertString(settings.site?.author, "site.author");
-  assertString(settings.site?.brandInitial, "site.brandInitial");
-  assertString(settings.site?.footerText, "site.footerText");
-  assertString(settings.home?.eyebrow, "home.eyebrow");
-  assertString(settings.home?.heroTitle, "home.heroTitle");
-  assertString(settings.home?.heroCopy, "home.heroCopy");
-  assertString(settings.home?.aboutEyebrow, "home.aboutEyebrow");
-  assertString(settings.home?.aboutTitle, "home.aboutTitle");
-  assertString(settings.home?.aboutCopy, "home.aboutCopy");
-  assertString(settings.home?.contactEyebrow, "home.contactEyebrow");
-  assertString(settings.home?.contactTitle, "home.contactTitle");
+const assertHref = (value: string, fieldName: string) => {
+  if (!hrefPrefixes.some((prefix) => value.startsWith(prefix))) {
+    throw new Error(
+      `settings.${fieldName} must start with one of: ${hrefPrefixes.join(", ")}.`,
+    );
+  }
+};
 
-  if (!Array.isArray(settings.home.topics)) {
+const assertRecord = (value: unknown, fieldName: string): Record<string, unknown> => {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new Error(`settings.${fieldName} must be an object.`);
+  }
+
+  return value as Record<string, unknown>;
+};
+
+const validateSettings = (settings: unknown): SiteSettings => {
+  const root = assertRecord(settings, "root");
+  const site = assertRecord(root.site, "site");
+  const home = assertRecord(root.home, "home");
+
+  assertString(site.name, "site.name");
+  assertString(site.title, "site.title");
+  assertString(site.description, "site.description");
+  assertString(site.author, "site.author");
+  assertString(site.brandInitial, "site.brandInitial");
+  assertString(site.footerText, "site.footerText");
+  assertString(home.eyebrow, "home.eyebrow");
+  assertString(home.heroTitle, "home.heroTitle");
+  assertString(home.heroCopy, "home.heroCopy");
+  assertString(home.aboutEyebrow, "home.aboutEyebrow");
+  assertString(home.aboutTitle, "home.aboutTitle");
+  assertString(home.aboutCopy, "home.aboutCopy");
+  assertString(home.contactEyebrow, "home.contactEyebrow");
+  assertString(home.contactTitle, "home.contactTitle");
+
+  if (!Array.isArray(home.topics)) {
     throw new Error("settings.home.topics must be an array.");
   }
 
-  for (const topic of settings.home.topics) {
-    assertString(topic, "home.topics[]");
+  for (const [index, topic] of home.topics.entries()) {
+    assertString(topic, `home.topics[${index}]`);
   }
 
-  if (!Array.isArray(settings.contactLinks)) {
+  if (!Array.isArray(root.contactLinks)) {
     throw new Error("settings.contactLinks must be an array.");
   }
 
-  for (const link of settings.contactLinks) {
-    if (!link || typeof link.label !== "string" || typeof link.href !== "string") {
-      throw new Error("Each contact link must include string label and href fields.");
-    }
+  for (const [index, linkValue] of root.contactLinks.entries()) {
+    const link = assertRecord(linkValue, `contactLinks[${index}]`);
+
+    assertString(link.label, `contactLinks[${index}].label`);
+    assertString(link.href, `contactLinks[${index}].href`);
+    assertHref(link.href as string, `contactLinks[${index}].href`);
   }
 
-  return settings;
+  return settings as SiteSettings;
 };
 
 export const getSiteSettings = async () => {
-  return validateSettings(await readSettingsFile(settingsPath));
+  try {
+    return validateSettings(await readSettingsFile(settingsPath));
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to load settings/settings.json: ${message}`);
+  }
 };
