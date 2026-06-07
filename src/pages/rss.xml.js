@@ -1,6 +1,7 @@
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
 import { getPublishedPosts } from "../lib/posts";
+import { getSiteSettings } from "../lib/settings";
 
 const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
@@ -9,11 +10,12 @@ const withBase = (path = "") => `${baseUrl}${path.replace(/^\/+/, "")}`;
 
 export async function GET(context) {
   const posts = getPublishedPosts(await getCollection("posts"));
+  const settings = await getSiteSettings();
   const rssSite = new URL(baseUrl, context.site).toString();
 
   return rss({
-    title: "Notes & Fieldwork",
-    description: "一个记录思考、项目和生活观察的个人博客。",
+    title: settings.site.name,
+    description: settings.site.description,
     site: rssSite,
     items: posts.map((post) => ({
       title: post.data.title,

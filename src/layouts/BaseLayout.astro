@@ -1,6 +1,8 @@
 ---
 import "../styles/global.css";
 import VisitCounter from "../components/VisitCounter.astro";
+import { getSiteSettings } from "../lib/settings";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../lib/site";
 
 interface Props {
   title?: string;
@@ -10,9 +12,11 @@ interface Props {
   structuredData?: Record<string, unknown>;
 }
 
+const settings = await getSiteSettings();
+
 const {
-  title = "个人博客 | Notes & Fieldwork",
-  description = "一个记录思考、项目和生活观察的个人博客。",
+  title = settings.site.title || SITE_TITLE,
+  description = settings.site.description || SITE_DESCRIPTION,
   image,
   type = "website",
   structuredData,
@@ -75,8 +79,8 @@ const imageUrl = resolveImageUrl(image);
     <header class="site-header">
       <nav class="nav" aria-label="主导航">
         <a class="brand" href={withBase()} aria-label="回到首页">
-          <span class="brand-mark">N</span>
-          <span>Notes & Fieldwork</span>
+          <span class="brand-mark">{settings.site.brandInitial}</span>
+          <span>{settings.site.name}</span>
         </a>
         <div class="nav-links">
           <a href={withBase("#posts")}>文章</a>
@@ -92,7 +96,7 @@ const imageUrl = resolveImageUrl(image);
     </main>
 
     <footer class="site-footer">
-      <p>© 2026 Notes & Fieldwork. Built with Astro and GitHub Pages.</p>
+      <p>{settings.site.footerText}</p>
       <VisitCounter type="site" />
     </footer>
     <script src={withBase("scripts/visit-counter.js")} defer></script>

@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getPublishedPosts, getCategories, categorySlug } from "../../lib/posts";
+import { getSiteSettings } from "../../lib/settings";
 import { formatDate, withBase } from "../../lib/site";
 
 export async function getStaticPaths() {
@@ -14,9 +15,11 @@ export async function getStaticPaths() {
 }
 
 const { category, posts } = Astro.props;
+const settings = await getSiteSettings();
+const pageDescription = `${settings.site.name} 中 ${category} 分类下的全部文章。`;
 ---
 
-<BaseLayout title={`${category} 分类 | Notes & Fieldwork`} description={`Notes & Fieldwork 中 ${category} 分类下的全部文章。`}>
+<BaseLayout title={`${category} 分类 | ${settings.site.name}`} description={pageDescription}>
   <section class="post-page taxonomy-page">
     <a class="back-link" href={withBase()}>← 返回首页</a>
     <p class="eyebrow">Category</p>

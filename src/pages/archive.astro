@@ -2,19 +2,22 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getPublishedPosts } from "../lib/posts";
+import { getSiteSettings } from "../lib/settings";
 import { formatDate, withBase } from "../lib/site";
 
 const posts = getPublishedPosts(await getCollection("posts"));
+const settings = await getSiteSettings();
+const pageDescription = `${settings.site.name} 的全部文章归档。`;
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
   name: "文章归档",
-  description: "Notes & Fieldwork 的全部文章归档。",
+  description: pageDescription,
   url: new URL(withBase("archive/"), Astro.site).toString(),
 };
 ---
 
-<BaseLayout title="文章归档 | Notes & Fieldwork" description="Notes & Fieldwork 的全部文章归档。" structuredData={structuredData}>
+<BaseLayout title={`文章归档 | ${settings.site.name}`} description={pageDescription} structuredData={structuredData}>
   <section class="post-page">
     <a class="back-link" href={withBase()}>← 返回首页</a>
     <p class="eyebrow">Archive</p>
