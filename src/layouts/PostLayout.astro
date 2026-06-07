@@ -14,11 +14,13 @@ interface Props {
   tags: string[];
   headings: { depth: number; slug: string; text: string }[];
   image?: string;
+  readingTime: number;
   previousPost?: BlogPost;
   nextPost?: BlogPost;
 }
 
-const { title, description, slug, pubDate, category, tags, headings, image, previousPost, nextPost } = Astro.props;
+const { title, description, slug, pubDate, category, tags, headings, image, readingTime, previousPost, nextPost } =
+  Astro.props;
 const settings = await getSiteSettings();
 const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
@@ -81,6 +83,7 @@ const structuredData = {
     <a class="back-link" href={withBase()}>← 返回首页</a>
     <p class="post-meta article-meta">
       <span>{formattedDate} · {category}</span>
+      <span>{readingTime} 分钟阅读</span>
       <VisitCounter type="page" />
     </p>
     <h1>{title}</h1>
