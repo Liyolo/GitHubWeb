@@ -52,25 +52,25 @@ npm run new-post -- "我的新文章标题"
 draft: true
 ```
 
-## Blog customization reference
+## 博客自定义参考
 
-Use `settings/settings.json` for site-wide customization. It controls the site identity (`site.name`, `site.title`, `site.description`, `site.author`, `site.brandInitial`), homepage copy (`home.*`), contact links (`contactLinks`), and footer text (`site.footerText`). Update this file when changing the blog name, hero/About/Contact copy, email link, GitHub link, or footer.
+全站配置集中在 `settings/settings.json`。它控制站点身份信息（`site.name`、`site.title`、`site.description`、`site.author`、`site.brandInitial`）、首页文案（`home.*`）、联系方式（`contactLinks`）和页脚文字（`site.footerText`）。如果要修改博客名称、首页 Hero/About/Contact 文案、邮箱链接、GitHub 链接或页脚内容，优先改这个文件。
 
-Add or edit posts in `src/content/posts/*.md`. Each Markdown file contains frontmatter followed by the article body. Use `draft: true` to keep a post unpublished, and set `draft: false` or remove the field when it is ready.
+文章放在 `src/content/posts/*.md`。每篇 Markdown 文章由顶部 frontmatter 和正文组成；如果暂时不想发布，可以设置 `draft: true`，准备发布时改成 `draft: false` 或删除这个字段。
 
-To add an article cover image, place the file in `public/images/posts/` and reference it from post frontmatter with a root-relative path:
+添加文章封面图时，把图片放到 `public/images/posts/`，然后在文章 frontmatter 中用根路径引用：
 
 ```yaml
 image: "/images/posts/example.svg"
 ```
 
-Cover images render on the homepage featured story, homepage post cards, and article detail pages. The site base path is applied automatically, so do not include `/GitHubWeb` in the frontmatter image path.
+封面图会显示在首页精选文章、首页文章卡片和文章详情页。站点会自动处理 GitHub Pages 的基础路径，所以 frontmatter 里的图片路径不要加 `/GitHubWeb`。
 
-The site includes a custom `404.html` page for missing routes. It gives readers links back to the homepage, archive, and article list.
+站点包含自定义 `404.html` 页面。访问不存在的地址时，页面会提供返回首页、查看归档和浏览文章的入口。
 
-Article pages include estimated reading time, a fixed reading-progress bar, a back-to-top button, previous/next article navigation, and visit counters. Site visits appear in the footer, and page visits appear below each article title. Reading time is calculated from Markdown content during the build.
+文章页包含预计阅读时长、固定阅读进度条、回到顶部按钮、上一篇/下一篇导航和访问量统计。全站访问量显示在页脚，单篇文章访问量显示在文章标题下方。阅读时长会在构建时根据 Markdown 正文自动计算。
 
-Browser scripts are authored in `src/scripts/*` and mirrored into `public/scripts/*` for static serving. When changing one of these scripts, keep the public copy synchronized and verify with:
+浏览器脚本先写在 `src/scripts/*`，再同步到 `public/scripts/*` 供静态站点访问。修改这些脚本时，要保持两边内容一致，并用下面的命令验证：
 
 ```powershell
 npm.cmd run verify:public-scripts
