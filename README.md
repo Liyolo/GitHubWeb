@@ -52,6 +52,30 @@ npm run new-post -- "我的新文章标题"
 draft: true
 ```
 
+## Blog customization reference
+
+Use `settings/settings.json` for site-wide customization. It controls the site identity (`site.name`, `site.title`, `site.description`, `site.author`, `site.brandInitial`), homepage copy (`home.*`), contact links (`contactLinks`), and footer text (`site.footerText`). Update this file when changing the blog name, hero/About/Contact copy, email link, GitHub link, or footer.
+
+Add or edit posts in `src/content/posts/*.md`. Each Markdown file contains frontmatter followed by the article body. Use `draft: true` to keep a post unpublished, and set `draft: false` or remove the field when it is ready.
+
+To add an article cover image, place the file in `public/images/posts/` and reference it from post frontmatter with a root-relative path:
+
+```yaml
+image: "/images/posts/example.svg"
+```
+
+Cover images render on the homepage featured story, homepage post cards, and article detail pages. The site base path is applied automatically, so do not include `/GitHubWeb` in the frontmatter image path.
+
+The site includes a custom `404.html` page for missing routes. It gives readers links back to the homepage, archive, and article list.
+
+Article pages include estimated reading time, a fixed reading-progress bar, a back-to-top button, previous/next article navigation, and visit counters. Site visits appear in the footer, and page visits appear below each article title. Reading time is calculated from Markdown content during the build.
+
+Browser scripts are authored in `src/scripts/*` and mirrored into `public/scripts/*` for static serving. When changing one of these scripts, keep the public copy synchronized and verify with:
+
+```powershell
+npm.cmd run verify:public-scripts
+```
+
 写完文章后，把 `draft` 改为 `false`，或删除这一行，再提交并推送即可发布。中文标题会自动生成安全的 `post-日期-短哈希.md` 文件名；英文标题会生成更可读的 slug 文件名。
 
 也可以手动创建文章。在 `src/content/posts/` 下新建 Markdown 文件，例如：
@@ -70,6 +94,7 @@ pubDate: 2026-06-02
 category: "学习"
 tags: ["Astro", "写作"]
 featured: false
+image: "/images/posts/example.svg"
 ---
 ```
 
@@ -145,7 +170,7 @@ npm run build
 如果想给文章设置分享图，可以在 frontmatter 中添加：
 
 ```yaml
-image: "/GitHubWeb/images/posts/example.jpg"
+image: "/images/posts/example.svg"
 ```
 
 图片文件可以放在：
