@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
+import ReadingProgress from "../components/ReadingProgress.astro";
 import TableOfContents from "../components/TableOfContents.astro";
 import VisitCounter from "../components/VisitCounter.astro";
 import type { BlogPost } from "../lib/posts";
@@ -85,6 +86,7 @@ const structuredData = {
   type="article"
   structuredData={structuredData}
 >
+  <ReadingProgress />
   <article class="post-page">
     <a class="back-link" href={withBase()}>← 返回首页</a>
     <p class="post-meta article-meta">

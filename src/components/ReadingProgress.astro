@@ -1,0 +1,11 @@
+---
+import { withBase } from "../lib/site";
+---
+
+<div class="reading-progress" aria-hidden="true">
+  <span data-reading-progress-bar></span>
+</div>
+<button class="back-to-top" type="button" data-back-to-top aria-label="回到文章顶部">
+  ↑
+</button>
+<script src={withBase("scripts/reading-progress.js")} defer></script>

@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 const scriptPairs = [
   ["src/scripts/post-search.js", "public/scripts/post-search.js"],
   ["src/scripts/visit-counter.js", "public/scripts/visit-counter.js"],
+  ["src/scripts/reading-progress.js", "public/scripts/reading-progress.js"],
 ];
 
 const mismatches = [];
