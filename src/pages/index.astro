@@ -10,6 +10,11 @@ const featured = posts.find((post) => post.data.featured) ?? posts[0];
 const tags = getTags(posts).slice(0, 12);
 const settings = await getSiteSettings();
 const { contactLinks } = settings;
+const resolveImagePath = (image?: string) => {
+  if (!image) return undefined;
+  if (/^https?:\/\//i.test(image)) return image;
+  return withBase(image);
+};
 const normalizeSearchText = (value: string) => value.toLowerCase();
 const searchIndex = posts.map((post: BlogPost) => ({
   slug: post.slug,
@@ -53,6 +58,14 @@ const structuredData = {
     </div>
     {featured ? (
       <article class="feature-story">
+        {featured.data.image && (
+          <img
+            class="feature-story-image"
+            src={resolveImagePath(featured.data.image)}
+            alt={`《${featured.data.title}》文章封面`}
+            loading="eager"
+          />
+        )}
         <div>
           <p class="post-meta">{formatDate(featured.data.pubDate)} · {featured.data.category}</p>
           <h3><a href={withBase(`posts/${featured.slug}/`)}>{featured.data.title}</a></h3>
@@ -97,6 +110,14 @@ const structuredData = {
       {posts.length > 0 ? (
         posts.map((post) => (
           <article class="post-card" data-topic={post.data.category} data-slug={post.slug}>
+            {post.data.image && (
+              <img
+                class="post-card-image"
+                src={resolveImagePath(post.data.image)}
+                alt={`《${post.data.title}》文章封面`}
+                loading="lazy"
+              />
+            )}
             <p class="post-meta">
               {formatDate(post.data.pubDate)} ·
               <a href={withBase(`categories/${categorySlug(post.data.category)}/`)}>{post.data.category}</a>

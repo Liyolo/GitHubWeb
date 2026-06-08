@@ -348,6 +348,27 @@ h3 {
   display: none;
 }
 
+.feature-story-image,
+.post-card-image,
+.post-cover img {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  object-fit: cover;
+}
+
+.feature-story-image {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 1.25rem;
+}
+
+.post-card-image {
+  aspect-ratio: 16 / 9;
+  margin: -0.05rem 0 1.25rem;
+}
+
 .post-card p:not(.post-meta) {
   color: var(--muted);
 }
@@ -547,6 +568,15 @@ h3 {
   color: var(--pine);
   background: rgba(255, 250, 240, 0.72);
   font-weight: 900;
+}
+
+.post-cover {
+  margin: 2rem 0 2.5rem;
+}
+
+.post-cover img {
+  max-height: 560px;
+  margin: 0;
 }
 
 .article-content {

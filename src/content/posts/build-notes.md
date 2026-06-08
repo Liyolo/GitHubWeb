@@ -5,6 +5,7 @@ pubDate: 2026-06-01
 category: "项目"
 tags: ["GitHub Pages", "个人网站", "写作系统"]
 featured: true
+image: "/images/posts/build-notes.svg"
 ---
 
 ## 为什么先选择静态站点
